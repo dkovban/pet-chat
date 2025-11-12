@@ -1,0 +1,119 @@
+@startuml USD
+
+enum ConversationType {
+    DirectMessages = 0
+    Group = 1
+    Channel = 2
+}
+
+enum ParticipantRole {
+    Owner = 0
+    Admin = 1
+    Member = 2
+}
+
+enum EmotionType {
+    Smile = 0
+    Heart = 1
+    Like = 2
+    Dislike = 3
+    Handshake = 4
+    Ok = 5
+}
+
+enum FileType {
+    Photo = 0
+    Video = 1
+    Audio = 2
+    Other = 3
+}
+
+entity User {
+    * Id: uuid                                  /' Id пользователя '/
+    --
+    * Username: text                            /' Никнейм пользователя '/
+    * LastActivityUtc: datetime                 /' Время последней активности пользователя '/
+    * CreatedAtUtc: datetime                    /' Время регистрации аккаунта '/
+    Description: text                           /' Описание пользователя '/
+    BirthDateUtc: datetime                      /' Дата рождения пользователя '/
+    * Settings: json                            /' Личные настройки пользователя '/
+}
+
+entity Conversation {
+    * Id: uuid                                  /' Id разговора '/
+    --
+    Title: text                                 /' Наименование разговора '/
+    Description: text                           /' Описание разговора '/
+    * Type: ConversationType                    /' Тип разговора '/
+    LastMessageId: uuid <<FK>>                  /' Id последнего сообщения в разговоре '/
+}
+
+entity Participant {
+    * Id: uuid                                  /' Id участника разговора '/
+    --
+    * UserId: uuid <<FK>>                       /' Id пользователя '/
+    * ConversationId: uuid <<FK>>               /' Id разговора '/
+    * Role: ParticipantRole                     /' Роль участника разговора '/
+    * JoinedAtUtc: datetime                     /' Время вступления в разговор '/
+}
+
+entity Message {
+    * Id: uuid                                  /' Id сообщения '/
+    --
+    * ConversationId: uuid <<FK>>               /' Id разговора '/
+    * UserId: uuid <<FK>>                       /' Id пользователя '/
+    * Seq: long                                 /' Порядковый номер сообщения в разговоре '/
+    Body: text                                  /' Текст сообщения '/
+    * IsEdited: bool                            /' Флаг присутствия изменений в сообщении '/
+    * CreatedAtUtc: datetime                    /' Время создания сообщения '/
+}
+
+entity LastReadMessage {
+    * Id                                        /' Id записи '/
+    --
+    * UserId: uuid <<FK>>                       /' Id пользователя '/
+    * ConversationId: uuid <<FK>>               /' Id разговора '/
+    * MessageId: uuid <<FK>>                    /' Id сообщения '/
+    * LastReadTimeUtc: datetime                 /' Время последнего прочтения '/
+}
+
+entity MessageReaction {
+    * Id: uuid                                  /' Id реакции на сообщение '/
+    --
+    * UserId: uuid <<FK>>                       /' Id пользователя '/
+    * MessageId: uuid <<FK>>                    /' Id сообщения '/
+    * EmotionType: EmotionType                  /' Тип эмоции '/
+    * ReactedAtUtc: datetime                    /' Время реакции '/
+}
+
+entity Attachment {
+    * Id                                        /' Id приложения '/
+    --
+    * MessageId: uuid <<FK>>                    /' Id сообщения '/
+    * FileType: FileType                        /' Тип файла '/
+    * FileId: uuid <<FK to S3>>                 /' Id файла в S3 '/
+}
+
+ConversationType .. Conversation
+ParticipantRole .. Participant
+EmotionType .. MessageReaction
+FileType .. Attachment
+
+Participant }o--|| User : belongs to >
+Participant }o--|| Conversation : joins >
+
+Message }o--|| User : sent by >
+Message }o--|| Conversation : in >
+
+Conversation ||--o{ Message : contains >
+
+LastReadMessage }o--|| User
+LastReadMessage }o--|| Conversation
+LastReadMessage }o--|| Message
+
+MessageReaction }o--|| User
+MessageReaction }o--|| Message
+
+Attachment }o--|| Message
+
+@enduml
