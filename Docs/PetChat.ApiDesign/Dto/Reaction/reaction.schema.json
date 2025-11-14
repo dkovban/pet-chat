@@ -1,0 +1,38 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель реакции на сообщение",
+    "title": "Reaction",
+    "type": "object",
+    "required": [
+        "id",
+        "userId",
+        "emotionType",
+        "reactedAtUtc"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор реакции",
+            "nullable": false
+        },
+        "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор пользователя, отправившего реакцию",
+            "nullable": false
+        },
+        "emotionType": {
+            "$ref": "emotion-type.schema.json",
+            "description": "Тип реакции",
+            "nullable": false
+        },
+        "reactedAtUtc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Время реакции",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}

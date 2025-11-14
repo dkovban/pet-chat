@@ -1,0 +1,23 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель обновления разговора",
+    "title": "Update Conversation",
+    "type": "object",
+    "required": [
+        "title",
+        "description"
+    ],
+    "properties": {
+        "title": {
+            "type": "string",
+            "description": "Название разговора",
+            "nullable": true
+        },
+        "description": {
+            "type": "string",
+            "description": "Описание разговора",
+            "nullable": true
+        }
+    },
+    "additionalProperties": false
+}

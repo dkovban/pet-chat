@@ -1,0 +1,30 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель для обновления информации о пользователе.",
+    "title": "Create User",
+    "type": "object",
+    "required": [
+        "username",
+        "description",
+        "birthDate"
+    ],
+    "properties": {
+        "username": {
+            "type": "string",
+            "description": "Имя пользователя",
+            "nullable": false
+        },
+        "description": {
+            "type": "string",
+            "description": "Описание пользователя",
+            "nullable": true
+        },
+        "birthDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Дата рождения пользователя",
+            "nullable": true
+        }
+    },
+    "additionalProperties": false
+}
