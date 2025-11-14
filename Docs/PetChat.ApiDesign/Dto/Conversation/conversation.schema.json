@@ -1,0 +1,48 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель разговора",
+    "title": "Conversation",
+    "type": "object",
+    "required": [
+        "id",
+        "title",
+        "description",
+        "conversationType",
+        "lastMessage",
+        "unreadCount"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор разговора",
+            "nullable": false
+        },
+        "title": {
+            "type": "string",
+            "description": "Название разговора",
+            "nullable": true
+        },
+        "description": {
+            "type": "string",
+            "description": "Описание разговора",
+            "nullable": true
+        },
+        "conversationType": {
+            "$ref": "conversation-type.schema.json",
+            "description": "Тип разговора",
+            "nullable": false
+        },
+        "lastMessage": {
+            "$ref": "../Message/message-short.schema.json",
+            "description": "Последнее сообщение",
+            "nullable": true
+        },
+        "unreadCount": {
+            "type": "integer",
+            "description": "Количество непрочитанных сообщений",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}

@@ -1,0 +1,15 @@
+openapi: 3.0.3
+
+info:
+  title: Users
+  version: v1
+  description: Интерфейс для работы с пользователями
+
+tags:
+  - name: Users
+    description: Операции, связанные с пользователями.
+
+paths:
+
+components:
+  schemas:

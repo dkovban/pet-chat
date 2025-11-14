@@ -1,0 +1,26 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель обновления сообщения",
+    "title": "Update Message",
+    "type": "object",
+    "required": [
+        "body",
+        "attachments"
+    ],
+    "properties": {
+        "body": {
+            "type": "string",
+            "description": "Тело сообщения",
+            "nullable": true
+        },
+        "attachments": {
+            "type": "array",
+            "items": {
+                "$ref": "../Attachment/attachment.schema.json"
+            },
+            "description": "Список вложений, прикрепленных к сообщению",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}
