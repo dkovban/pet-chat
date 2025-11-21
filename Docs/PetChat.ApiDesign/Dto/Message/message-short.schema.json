@@ -22,7 +22,7 @@
             "nullable": true
         },
         "seq": {
-            "type": "int",
+            "type": "integer",
             "description": "Порядковый номер сообщения в чате",
             "nullable": false
         },

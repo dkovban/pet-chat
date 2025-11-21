@@ -39,12 +39,12 @@
             "nullable": true
         },
         "seq": {
-            "type": "int",
+            "type": "integer",
             "description": "Порядковый номер сообщения в чате",
             "nullable": false
         },
         "isEdited": {
-            "type": "bool",
+            "type": "boolean",
             "description": "Флаг, показывающий редактировалось ли сообщение",
             "nullable": false
         },

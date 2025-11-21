@@ -1,0 +1,155 @@
+openapi: 3.0.3
+
+info:
+  title: Reactions
+  version: v1
+  description: Интерфейс для работы с реакциями на сообщения.
+
+tags:
+  - name: Reactions
+    description: Операции, связанные с реациями на сообщения.
+
+paths:
+  /api/v1/messages/{messageId}/reactions:
+    get:
+      tags:
+        - Reactions
+      operationId: getReactions
+      summary: Получить реакции по id сообщения.
+      parameters:
+        - in: path
+          name: messageId
+          description: Id сообщения.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: Реакции успешно получены.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reaction"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+                  schema:
+                    $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Сообщение не найдено.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+    post:
+      tags:
+        - Reactions
+      operationId: addReaction
+      summary: Добавить реакцию к сообщению.
+      parameters:
+        - in: path
+          name: messageId
+          description: Id сообщения.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddReaction"
+      responses:
+        201:
+          description: Реакция добавлена успешно.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reaction"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+                  schema:
+                    $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Сообщение не найдено.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        409:
+          description: Реакция уже существует.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+
+  /api/v1/messages/{messageId}/reactions/{reactionId}:
+    delete:
+      tags:
+        - Reactions
+      operationId: deleteReaction
+      summary: Удалить реакцию по Id.
+      parameters:
+        - in: path
+          name: messageId
+          description: Id сообщения
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: reactionId
+          description: Id реакции.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        204:
+          description: Реакция успешно удалена.
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+                  schema:
+                    $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Сообщение или реакция не найдены.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+      
+components:
+  schemas:
+    AddReaction:
+      $ref: "../Dto/Reaction/create-reaction.schema.json"
+    Reaction:
+      $ref: "../Dto/Reaction/reaction.schema.json"
+    ProblemDetails:
+      $ref: "../Dto/Problems/problems.schema.json"

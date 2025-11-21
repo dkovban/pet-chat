@@ -16,9 +16,10 @@
         "attachments": {
             "type": "array",
             "items": {
-                "$ref": "../Attachment/attachment.schema.json"
+                "type": "string",
+                "format": "uuid"
             },
-            "description": "Список вложений, прикрепленных к сообщению",
+            "description": "Список id вложений, прикрепленных к сообщению",
             "nullable": false
         }
     },

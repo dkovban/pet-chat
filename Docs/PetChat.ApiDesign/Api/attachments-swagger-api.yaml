@@ -1,0 +1,80 @@
+openapi: 3.0.3
+
+info:
+  title: Attachments
+  version: v1
+  description: Интерфейс для работы с вложениями.
+
+tags:
+  - name: Attachments
+    description: Операции, связанные с вложениями.
+
+paths:
+  /api/v1/attachments:
+    post:
+      tags:
+        - Attachments
+      operationId: addAttachment
+      summary: Добавить вложение.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+      responses:
+        201:
+          description: Вложение успешно добавлено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attachment"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+
+  /api/v1/attachments/{attachmentId}:
+    delete:
+      tags:
+        - Attachments
+      operationId: deleteAttachment
+      summary: Удалить вложение по id.
+      parameters:
+        - in: path
+          name: attachmentId
+          description: Id вложения.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        204:
+          description: Вложение успешно удалено.
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+                  schema:
+                    $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Вложение не найдено.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+
+components:
+  schemas:
+    Attachment:
+      $ref: "../Dto/Attachment/attachment.schema.json"
+    ProblemDetails:
+      $ref: "../Dto/Problems/problems.schema.json"

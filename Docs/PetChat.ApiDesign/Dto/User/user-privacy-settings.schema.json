@@ -10,17 +10,17 @@
     ],
     "properties": {
         "hideBirthDate": {
-            "type": "bool",
+            "type": "boolean",
             "description": "Флаг, показывающий необходимость скрывать дату рождения",
             "nullable": false
         },
         "hideLastActivity": {
-            "type": "bool",
+            "type": "boolean",
             "description": "Флаг, показывающий необходимость скрывать время последней активности",
             "nullable": false
         },
         "hideCreationTime": {
-            "type": "bool",
+            "type": "boolean",
             "description": "Флаг, показывающий необходимость скрывать время регистрации",
             "nullable": false
         }
