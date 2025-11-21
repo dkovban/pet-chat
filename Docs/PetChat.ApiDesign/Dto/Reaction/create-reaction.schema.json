@@ -1,0 +1,17 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель создания реакции на сообщение",
+    "title": "Create Reaction",
+    "type": "object",
+    "required": [
+        "emotionType"
+    ],
+    "properties": {
+        "emotionType": {
+            "$ref": "emotion-type.schema.json",
+            "description": "Тип реакции",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}

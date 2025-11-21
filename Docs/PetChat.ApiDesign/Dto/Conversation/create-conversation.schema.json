@@ -1,0 +1,38 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель создания разговора",
+    "title": "Create Conversation",
+    "type": "object",
+    "required": [
+        "title",
+        "description",
+        "conversationType",
+        "participants"
+    ],
+    "properties": {
+        "title": {
+            "type": "string",
+            "description": "Название разговора",
+            "nullable": true
+        },
+        "description": {
+            "type": "string",
+            "description": "Описание разговора",
+            "nullable": true
+        },
+        "conversationType": {
+            "$ref": "conversation-type.schema.json",
+            "description": "Тип разговора",
+            "nullable": false
+        },
+        "participants": {
+            "type": "array",
+            "items": {
+                "$ref": "../Participant/create-participant.schema.json"
+            },
+            "description": "Последнее сообщение",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}

@@ -1,0 +1,237 @@
+openapi: 3.0.3
+
+info:
+  title: Conversations
+  version: v1
+  description: Интерфейс для работы с разговорами.
+
+tags:
+  - name: Conversations
+    description: Операции, связанные с разговорами.
+
+paths:
+  /api/v1/conversations:
+    get:
+      tags:
+        - Conversations
+      operationId: getConversations
+      summary: Получить разговоры.
+      parameters:
+        - in: query
+          name: title
+          description: Название разговора.
+          schema:
+            type: string
+          required: false
+      responses:
+        200:
+          description: Разговоры получены успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    post:
+      tags:
+        - Conversations
+      operationId: addConversation
+      summary: Добавить новый разговор.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddConversation"
+      responses:
+        201:
+          description: Разговор создан успешно.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+        400: 
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        409:
+          description: Конфликт при создании разговора.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    delete:
+      tags:
+        - Conversations
+      operationId: deleteConversations
+      summary: Удалить разговоры по фильтрам.
+      parameters:
+        - in: query
+          name: includeIds
+          description: Список id разговоров для удаления.
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+      responses:
+        204:
+          description: Разговоры успешно удалены.
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Разговор не найден.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+  /api/v1/conversations/{conversationId}:
+    get:
+      tags:
+        - Conversations
+      operationId: getConversation
+      summary: Получить разговор по Id.
+      parameters:
+        - in: path
+          name: conversationId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Разговор успешно получен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+        400: 
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Разговор не найден.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    put:
+      tags:
+        - Conversations
+      operationId: updateConversation
+      summary: Обновить разговор по Id.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConversationUpdate"
+      responses:
+        200:
+          description: Разговор успешно обновлен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+        400: 
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Разговор не найден.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    delete:
+      tags:
+        - Conversations
+      operationId: deleteConversation
+      summary: Удалить разговор по id.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        204:
+          description: Разговор успешно удален.
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Разговор не найден.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+components:
+  schemas:
+    Conversation:
+      $ref: "../Dto/Conversation/conversation.schema.json"
+    AddConversation:
+      $ref: "../Dto/Conversation/create-conversation.schema.json"
+    ConversationUpdate:
+      $ref: "../Dto/Conversation/update-conversation.schema.json"
+    ProblemDetails:
+      $ref: "../Dto/Problems/problems.schema.json"

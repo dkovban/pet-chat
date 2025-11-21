@@ -1,0 +1,17 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель обновления участника",
+    "title": "UpdateParticipant",
+    "type": "object",
+    "required": [
+        "participantRole"
+    ],
+    "properties": {
+        "participantRole": {
+            "$ref": "participant-role.schema.json",
+            "description": "Роль участника",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}

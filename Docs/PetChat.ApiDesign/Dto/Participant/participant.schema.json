@@ -1,0 +1,38 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель участника",
+    "title": "Participant",
+    "type": "object",
+    "required": [
+        "id",
+        "userId",
+        "participantRole",
+        "joinedAtUtc"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор участника",
+            "nullable": false
+        },
+        "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор пользователя",
+            "nullable": false
+        },
+        "participantRole": {
+            "$ref": "participant-role.schema.json",
+            "description": "Роль участника",
+            "nullable": false
+        },
+        "joinedAtUtc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Дата создания участника",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}

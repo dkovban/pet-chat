@@ -1,0 +1,29 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель настроек приватности пользователя.",
+    "title": "Privacy Settings",
+    "type": "object",
+    "required": [
+        "hideBirthDate",
+        "hideLastActivity",
+        "hideCreationTime"
+    ],
+    "properties": {
+        "hideBirthDate": {
+            "type": "boolean",
+            "description": "Флаг, показывающий необходимость скрывать дату рождения",
+            "nullable": false
+        },
+        "hideLastActivity": {
+            "type": "boolean",
+            "description": "Флаг, показывающий необходимость скрывать время последней активности",
+            "nullable": false
+        },
+        "hideCreationTime": {
+            "type": "boolean",
+            "description": "Флаг, показывающий необходимость скрывать время регистрации",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}

@@ -68,6 +68,12 @@ entity Message {
     * CreatedAtUtc: datetime                    /' Время создания сообщения '/
 }
 
+entity MessagesAttachments
+{
+    MessageId: uuid <<FK>>                      /' Id сообщения '/
+    AttachmentId: uuid <<FK>>                   /' Id вложения '/
+}
+
 entity LastReadMessage {
     * Id                                        /' Id записи '/
     --
@@ -89,7 +95,6 @@ entity MessageReaction {
 entity Attachment {
     * Id                                        /' Id приложения '/
     --
-    * MessageId: uuid <<FK>>                    /' Id сообщения '/
     * FileType: FileType                        /' Тип файла '/
     * FileId: uuid <<FK to S3>>                 /' Id файла в S3 '/
 }
@@ -114,6 +119,7 @@ LastReadMessage }o--|| Message
 MessageReaction }o--|| User
 MessageReaction }o--|| Message
 
-Attachment }o--|| Message
+Attachment }o--|| MessagesAttachments
+Message }o--|| MessagesAttachments
 
 @enduml

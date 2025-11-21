@@ -1,0 +1,69 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель сообщения",
+    "title": "Message",
+    "type": "object",
+    "required": [
+        "id",
+        "conversationId",
+        "userId",
+        "body",
+        "seq",
+        "isEdited",
+        "createdAtUtc",
+        "attachments",
+        "reactions"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор сообщения",
+            "nullable": false
+        },
+        "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор пользователя, отправившего сообщение",
+            "nullable": false
+        },
+        "body": {
+            "type": "string",
+            "description": "Тело сообщения",
+            "nullable": true
+        },
+        "seq": {
+            "type": "integer",
+            "description": "Порядковый номер сообщения в чате",
+            "nullable": false
+        },
+        "isEdited": {
+            "type": "boolean",
+            "description": "Флаг, показывающий редактировалось ли сообщение",
+            "nullable": false
+        },
+        "createdAtUtc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Время отправки сообщения",
+            "nullable": false
+        },
+        "attachments": {
+            "type": "array",
+            "items": {
+                "$ref": "../Attachment/attachment.schema.json"
+            },
+            "description": "Список вложений, прикрепленных к сообщению",
+            "nullable": false
+        },
+        "reactions": {
+            "type": "array",
+            "items": {
+                "$ref": "../Reaction/reaction-count.schema.json"
+            },
+            "description": "Список реакций на сообщение",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}
