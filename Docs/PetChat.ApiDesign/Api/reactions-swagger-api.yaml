@@ -102,6 +102,48 @@ paths:
                 schema:
                   $ref: "#/components/schemas/ProblemDetails"
 
+  /api/v1/messages/{messageId}/reactions/count:
+    get:
+      tags:
+        - Reactions
+      operationId: getReactionsCounts
+      summary: Получить количество реакций по типу эмоции.
+      parameters:
+        - in: path
+          name: messageId
+          description: Id сообщения.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: Количества реакций получены успешно.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReactionCount"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+                  schema:
+                    $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Сообщение или реакция не найдены.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+
   /api/v1/messages/{messageId}/reactions/{reactionId}:
     delete:
       tags:
@@ -151,5 +193,7 @@ components:
       $ref: "../Dto/Reaction/create-reaction.schema.json"
     Reaction:
       $ref: "../Dto/Reaction/reaction.schema.json"
+    ReactionCount:
+      $ref: "../Dto/Reaction/reaction-count.schema.json"
     ProblemDetails:
       $ref: "../Dto/Problems/problems.schema.json"

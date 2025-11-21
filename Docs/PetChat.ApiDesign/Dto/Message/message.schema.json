@@ -21,12 +21,6 @@
             "description": "Идентификатор сообщения",
             "nullable": false
         },
-        "conversationId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Идентификатор разговора, к которому прикреплено сообщение",
-            "nullable": false
-        },
         "userId": {
             "type": "string",
             "format": "uuid",
@@ -65,7 +59,7 @@
         "reactions": {
             "type": "array",
             "items": {
-                "$ref": "../Reaction/reaction.schema.json"
+                "$ref": "../Reaction/reaction-count.schema.json"
             },
             "description": "Список реакций на сообщение",
             "nullable": false
