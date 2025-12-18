@@ -72,22 +72,21 @@ entity MessagesAttachments
 {
     MessageId: uuid <<FK>>                      /' Id сообщения '/
     AttachmentId: uuid <<FK>>                   /' Id вложения '/
+    --
 }
 
 entity LastReadMessage {
-    * Id                                        /' Id записи '/
-    --
     * UserId: uuid <<FK>>                       /' Id пользователя '/
     * ConversationId: uuid <<FK>>               /' Id разговора '/
     * MessageId: uuid <<FK>>                    /' Id сообщения '/
+    --
     * LastReadTimeUtc: datetime                 /' Время последнего прочтения '/
 }
 
 entity MessageReaction {
-    * Id: uuid                                  /' Id реакции на сообщение '/
-    --
     * UserId: uuid <<FK>>                       /' Id пользователя '/
     * MessageId: uuid <<FK>>                    /' Id сообщения '/
+    --
     * EmotionType: EmotionType                  /' Тип эмоции '/
     * ReactedAtUtc: datetime                    /' Время реакции '/
 }
@@ -99,18 +98,26 @@ entity Attachment {
     * FileId: uuid <<FK to S3>>                 /' Id файла в S3 '/
 }
 
+entity Photo
+{
+    * FileId: uuid <<FK to S3>>
+    * UserId: uuid <<FK>>
+    --
+    * CreatedAtUtc: datetime
+}
+
 ConversationType .. Conversation
 ParticipantRole .. Participant
 EmotionType .. MessageReaction
 FileType .. Attachment
 
-Participant }o--|| User : belongs to >
-Participant }o--|| Conversation : joins >
+Participant }o--|| User
+Participant }o--|| Conversation
 
-Message }o--|| User : sent by >
-Message }o--|| Conversation : in >
+Message }o--|| User
+Message }o--|| Conversation
 
-Conversation ||--o{ Message : contains >
+Conversation ||--o{ Message
 
 LastReadMessage }o--|| User
 LastReadMessage }o--|| Conversation
@@ -121,5 +128,7 @@ MessageReaction }o--|| Message
 
 Attachment }o--|| MessagesAttachments
 Message }o--|| MessagesAttachments
+
+Photo }o--|| User
 
 @enduml
