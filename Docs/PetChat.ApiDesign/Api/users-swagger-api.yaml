@@ -255,6 +255,98 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
 
+  /api/v1/users/{id}/photos:
+    patch:
+      tags:
+        - Users
+      operationId: setMainPhoto
+      summary: Установить главное фото пользователя.
+      parameters:
+        - in: path
+          name: Id
+          description: id пользователя.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetUserPhoto"
+      responses:
+        200:
+          description: Главное фото пользователя успешно установлено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Photo"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Пользователь не найден.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    post:
+      tags:
+        - Users
+      operationId: addUserPhoto
+      summary: Добавить фото к профилю.
+      parameters:
+        - in: path
+          name: id
+          description: Id пользователя.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+      responses:
+        200:
+          description: Фото пользователя успешно добавлено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Photo"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Пользователь не найден.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+
+
+
 components:
   schemas:
     AddUser:
@@ -265,5 +357,9 @@ components:
       $ref: "../Dto/User/update-user.schema.json"
     UserPrivacySettings:
       $ref: "../Dto/User/user-privacy-settings.schema.json"
+    SetUserPhoto:
+      $ref: "../Dto/User/set-user-photo.schema.json"
+    Photo:
+      $ref: "../Dto/Photo/photo.schema.json"
     ProblemDetails:
       $ref: "../Dto/Problems/problems.schema.json"

@@ -1,0 +1,18 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель для установки главного фото пользователя.",
+    "title": "Set Main User Photo",
+    "type": "object",
+    "required": [
+        "fileId"
+    ],
+    "properties": {
+        "fileId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор файла в S3",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}

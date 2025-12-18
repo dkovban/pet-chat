@@ -1,0 +1,24 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель фотографии.",
+    "title": "Photo Model",
+    "type": "object",
+    "required": [
+        "fileId",
+        "fileLink"
+    ],
+    "properties": {
+        "fileId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Id файла в S3",
+            "nullable": false
+        },
+        "fileLink": {
+            "type": "string",
+            "description": "Ссылка на файл в S3",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}

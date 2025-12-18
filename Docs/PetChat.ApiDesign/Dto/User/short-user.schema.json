@@ -1,0 +1,30 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Укороченая модель пользователя.",
+    "title": "Short User",
+    "type": "object",
+    "required": [
+        "id",
+        "username",
+        "mainPhoto"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор пользователя",
+            "nullable": false
+        },
+        "username": {
+            "type": "string",
+            "description": "Имя пользователя",
+            "nullable": false
+        },
+        "mainPhoto": {
+            "$ref": "../Photo/photo.schema.json",
+            "description": "Главная фотография пользователя.",
+            "nullable": true
+        }
+    },
+    "additionalProperties": false
+}

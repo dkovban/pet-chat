@@ -10,47 +10,7 @@ tags:
     description: Операции, связанные с участниками разговоров.
 
 paths:
-  /api/v1/conversations/{conversationId}/participants:
-    get:
-      tags:
-        - Participants
-      operationId: getParticipants
-      summary: Получить участников разговора.
-      parameters:
-        - in: path
-          name: conversationId
-          description: Id разговора.
-          schema:
-            type: string
-            format: uuid
-          required: true
-      responses:
-        200:
-          description: Участники разговора получены успешно.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Participant"
-        400:
-          description: Невалидные данные запроса.
-          content:
-            application/json:
-                  schema:
-                    $ref: "#/components/schemas/ProblemDetails"
-        404:
-          description: Разговор не найден.
-          content:
-            application/json:
-                schema:
-                  $ref: "#/components/schemas/ProblemDetails"
-        500:
-          description: Внутренняя ошибка сервера.
-          content:
-            application/json:
-                schema:
-                  $ref: "#/components/schemas/ProblemDetails"
+  /api/v1/participants/{conversationId}:
     post:
       tags:
         - Participants
@@ -151,52 +111,7 @@ paths:
                 schema:
                   $ref: "#/components/schemas/ProblemDetails"
   
-  /api/v1/conversations/{conversationId}/participants/{participantId}:
-    get:
-      tags:
-        - Participants
-      operationId: getParticipant
-      summary: Получить участника разговора по Id.
-      parameters:
-        - in: path
-          name: conversationId
-          description: Id разговора.
-          schema:
-            type: string
-            format: uuid
-          required: true
-        - in: query
-          name: participantId
-          description: Id участника.
-          schema:
-            type: string
-            format: uuid
-          required: true
-      responses:
-        200:
-          description: Участник разговора успешно получен.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Participant"
-        400:
-          description: Невалидные данные запроса.
-          content:
-            application/json:
-                  schema:
-                    $ref: "#/components/schemas/ProblemDetails"
-        404:
-          description: Разговор или участник не найден.
-          content:
-            application/json:
-                schema:
-                  $ref: "#/components/schemas/ProblemDetails"
-        500:
-          description: Внутренняя ошибка сервера.
-          content:
-            application/json:
-                schema:
-                  $ref: "#/components/schemas/ProblemDetails"
+  /api/v1/participants/{conversationId}/{participantId}:
     patch:
       tags:
         - Participants

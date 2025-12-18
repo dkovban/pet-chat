@@ -29,7 +29,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Conversation"
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConversationShort"
         500:
           description: Внутренняя ошибка сервера.
           content:
@@ -225,13 +227,107 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
 
+  /api/v1/conversations/{conversationId}/set-photo:
+    patch:
+      tags:
+        - Conversations
+      operationId: setConversationPhoto
+      summary: Установить фотографию разговора по id.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+      responses:
+        200:
+          description: Фотография разговора успешно установлена.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Photo"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Разговор не найден.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+  /api/v1/conversations/{conversationId}/{messageId}:
+    patch:
+      tags:
+        - Conversations
+      operationId: setLastReadedMessage
+      summary: Установить последнее прочитанное сообщение в разговоре.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: messageId
+          description: Id сообщения.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        204:
+          description: Последнее прочитанное сообщение успешно установлено.
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Разговор или сообщение не найдены.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        
+
 components:
   schemas:
     Conversation:
       $ref: "../Dto/Conversation/conversation.schema.json"
+    ConversationShort:
+      $ref: "../Dto/Conversation/short-conversation.schema.json"
     AddConversation:
       $ref: "../Dto/Conversation/create-conversation.schema.json"
     ConversationUpdate:
       $ref: "../Dto/Conversation/update-conversation.schema.json"
+    Photo:
+      $ref: "../Dto/Photo/photo.schema.json"
     ProblemDetails:
       $ref: "../Dto/Problems/problems.schema.json"

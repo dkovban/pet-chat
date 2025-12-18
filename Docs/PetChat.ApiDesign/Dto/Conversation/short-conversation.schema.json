@@ -6,11 +6,9 @@
     "required": [
         "id",
         "title",
-        "description",
         "conversationType",
         "lastMessage",
         "unreadCount",
-        "participants",
         "photo"
     ],
     "properties": {
@@ -23,11 +21,6 @@
         "title": {
             "type": "string",
             "description": "Название разговора",
-            "nullable": true
-        },
-        "description": {
-            "type": "string",
-            "description": "Описание разговора",
             "nullable": true
         },
         "conversationType": {
@@ -44,12 +37,6 @@
             "type": "integer",
             "description": "Количество непрочитанных сообщений",
             "nullable": false
-        },
-        "participants": {
-            "type": "array",
-            "items": {
-                "$ref": "../Participant/participant.schema.json"
-            }
         },
         "mainPhoto": {
             "$ref": "../Photo/photo.schema.json",
