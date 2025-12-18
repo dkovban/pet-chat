@@ -1,0 +1,284 @@
+openapi: 3.0.3
+
+info:
+  title: Messages
+  version: v1
+  description: Интерфейс для работы с сообщениями.
+
+tags:
+  - name: Conversations
+    description: Операции, связанные с сообщениями.
+
+paths:
+  /api/v1/conversations/{conversationId}/messages:
+    post:
+      tags:
+        - Messages
+      operationId: addMessage
+      summary: Добавить сообщение.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddMessage"
+      responses:
+        201:
+          description: Сообщение добавлено успешно.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageShort"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    get:
+      tags:
+        - Messages
+      operationId: getMessages
+      summary: Получить сообщения.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: query
+          name: fromSeq
+          description: Порядковый номер сообщения, c которого нужно начать выгрузку.
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: limit
+          description: Количество сообщений, которое необходимо получить.
+          schema:
+            type: integer
+          required: false
+      responses:
+        200:
+          description: Сообщения получены успешно.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    delete:
+      tags:
+        - Messages
+      operationId: deleteMessages
+      summary: Удалить сообщения по фильтрам.
+      parameters:
+        - in: query
+          name: includeIds
+          description: Список id сообщений для удаления.
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+      responses:
+        204:
+          description: Сообщения успешно удалены.
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Сообщение не найдено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+  /api/v1/conversations/{conversationId}/messages/{messageId}:
+    get:
+      tags:
+        - Messages
+      operationId: getMessage
+      summary: Получить сообщение по Id.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: messageId
+          description: Id сообщения.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: Сообщение получено успешно.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Сообщение не найдено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    patch:
+      tags:
+        - Messages
+      operationId: updateMessage
+      summary: Обновить сообщение по Id.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: messageId
+          description: Id сообщения.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageUpdate"
+      responses:
+        200:
+          description: Сообщение успешно обновлено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Сообщение не найдено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    delete:
+      tags:
+        - Messages
+      operationId: deleteMessage
+      summary: Удалить сообщение по Id.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: messageid
+          description: Id сообщения.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        204:
+          description: Сообщение успешно удалено.
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Сообщение не найдено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+components:
+  schemas:
+    AddMessage:
+      $ref: "../Dto/Message/create-message.schema.json"
+    Message:
+      $ref: "../Dto/Message/message.schema.json"
+    MessageShort:
+      $ref: "../Dto/Message/message-short.schema.json"
+    MessageUpdate:
+      $ref: "../Dto/Message/update-message.schema.json"
+    ProblemDetails:
+      $ref: "../Dto/Problems/problems.schema.json"

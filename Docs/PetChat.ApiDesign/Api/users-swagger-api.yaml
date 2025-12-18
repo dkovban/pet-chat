@@ -1,0 +1,365 @@
+openapi: 3.0.3
+
+info:
+  title: Users
+  version: v1
+  description: Интерфейс для работы с пользователями
+
+tags:
+  - name: Users
+    description: Операции, связанные с пользователями.
+
+paths:
+  /api/v1/users:
+    post:
+      tags:
+        - Users
+      operationId: addUser
+      summary: Добавить пользователя.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddUser"
+      responses:
+        201:
+          description: Пользователь добавлен успешно.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        409:
+          description: Конфликт при добавлении пользователя.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+  /api/v1/users/{username}:
+    get:
+      tags:
+        - Users
+      operationId: getUserByUsername
+      summary: Получить пользователя по username.
+      parameters:
+        - in: path
+          name: username
+          description: Имя пользователя.
+          schema:
+            type: string
+          required: true
+      responses:
+        201:
+          description: Пользователь добавлен успешно.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Пользователь не найден.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+  /api/v1/users/{id}:
+    get:
+      tags:
+        - Users
+      operationId: getUserById
+      summary: Получить пользователя по id.
+      parameters:
+        - in: path
+          name: id
+          description: id пользователя.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        201:
+          description: Пользователь добавлен успешно.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Пользователь не найден.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    put:
+      tags:
+        - Users
+      operationId: updateUser
+      summary: Обновить пользователя по id.
+      parameters:
+        - in: path
+          name: id
+          description: id пользователяы
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUser"
+      responses:
+        201:
+          description: Пользователь успешно обновлен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Пользователь не найден.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        409:
+          description: Конфликт при обновлении пользователя.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    patch:
+      tags:
+        - Users
+      operationId: updateUserPrivacySettings
+      summary: Обновить настройки приватности пользователя.
+      parameters:
+        - in: path
+          name: id
+          description: id пользователя
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPrivacySettings"
+      responses:
+        200:
+          description: Настройки приватности успешно обновлены.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPrivacySettings"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Пользователь не найден.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    delete:
+      tags:
+      - Users
+      operationId: deleteUser
+      summary: Удалить пользователя по id.
+      parameters:
+        - in: path
+          name: id
+          description: id пользователя.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        204:
+          description: Пользователь успешно удален.
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Пользователь не найден.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+  /api/v1/users/{id}/photos:
+    patch:
+      tags:
+        - Users
+      operationId: setMainPhoto
+      summary: Установить главное фото пользователя.
+      parameters:
+        - in: path
+          name: Id
+          description: id пользователя.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetUserPhoto"
+      responses:
+        200:
+          description: Главное фото пользователя успешно установлено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Photo"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Пользователь не найден.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    post:
+      tags:
+        - Users
+      operationId: addUserPhoto
+      summary: Добавить фото к профилю.
+      parameters:
+        - in: path
+          name: id
+          description: Id пользователя.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+      responses:
+        200:
+          description: Фото пользователя успешно добавлено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Photo"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Пользователь не найден.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+
+
+
+components:
+  schemas:
+    AddUser:
+      $ref: "../Dto/User/create-user.schema.json"
+    User:
+      $ref: "../Dto/User/user.schema.json"
+    UpdateUser:
+      $ref: "../Dto/User/update-user.schema.json"
+    UserPrivacySettings:
+      $ref: "../Dto/User/user-privacy-settings.schema.json"
+    SetUserPhoto:
+      $ref: "../Dto/User/set-user-photo.schema.json"
+    Photo:
+      $ref: "../Dto/Photo/photo.schema.json"
+    ProblemDetails:
+      $ref: "../Dto/Problems/problems.schema.json"

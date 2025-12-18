@@ -1,0 +1,28 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель проблем для application/problems+json.",
+    "required": [
+    ],
+    "properties": {
+      "type": {
+        "type": "string",
+        "nullable": false
+      },
+      "status": {
+        "type": "integer",
+        "nullable": false
+      },
+      "title": {
+        "type": "string",
+        "nullable": false
+      },
+      "detail": {
+        "type": "string",
+        "nullable": false
+      },
+      "instance": {
+        "type": "string",
+        "nullable": false
+      }
+    }
+  }

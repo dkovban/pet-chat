@@ -1,0 +1,27 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель создания сообщения",
+    "title": "Create Message",
+    "type": "object",
+    "required": [
+        "body",
+        "attachments"
+    ],
+    "properties": {
+        "body": {
+            "type": "string",
+            "description": "Тело сообщения",
+            "nullable": true
+        },
+        "attachments": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "uuid"
+            },
+            "description": "Список id вложений, прикрепленных к сообщению",
+            "nullable": false
+        }
+    },
+    "additionalProperties": false
+}

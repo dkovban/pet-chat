@@ -1,0 +1,31 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель вложения",
+    "title": "Attachment",
+    "type": "object",
+    "required": [
+        "id",
+        "fileType",
+        "fileId"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор вложения",
+            "nullable": false
+        },
+        "fileType": {
+            "description": "Тип вложения",
+            "$ref": "file-type.schema.json",
+            "nullable": false
+        },
+        "fileId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор файла в S3",
+            "nullable": true
+        }
+    },
+    "additionalProperties": false
+}

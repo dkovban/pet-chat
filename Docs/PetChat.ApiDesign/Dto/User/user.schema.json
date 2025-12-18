@@ -1,0 +1,57 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "description": "Модель пользователя.",
+    "title": "User",
+    "type": "object",
+    "required": [
+        "id",
+        "username",
+        "description",
+        "birthDate",
+        "lastActivity",
+        "createdAt",
+        "mainPhoto"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор пользователя",
+            "nullable": false
+        },
+        "username": {
+            "type": "string",
+            "description": "Имя пользователя",
+            "nullable": false
+        },
+        "description": {
+            "type": "string",
+            "description": "Описание пользователя",
+            "nullable": true
+        },
+        "birthDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Дата рождения пользователя",
+            "nullable": true
+        },
+        "lastActivityUtc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Время последней активности",
+            "nullable": false
+        },
+        "createdAtUtc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Время регистрации пользователя",
+            "nullable": false
+        },
+        "mainPhoto": {
+            "$ref": "../Photo/photo.schema.json",
+            "description": "Главная фотография пользователя.",
+            "nullable": true
+        }
+    },
+    "additionalProperties": false
+}

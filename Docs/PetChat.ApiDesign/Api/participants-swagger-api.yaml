@@ -1,0 +1,223 @@
+openapi: 3.0.3
+
+info:
+  title: Participants
+  version: v1
+  description: Интерфейс для работы с участниками разговоров.
+
+tags:
+  - name: Participants
+    description: Операции, связанные с участниками разговоров.
+
+paths:
+  /api/v1/participants/{conversationId}:
+    post:
+      tags:
+        - Participants
+      operationId: addParticipant
+      summary: Добавить участника разговора.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddParticipant"
+      responses:
+        200:
+          description: Участник разговора успешно добавлен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Participant"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+                  schema:
+                    $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Разговор не найден.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        409:
+          description: Участник уже существует.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+    delete:
+      tags:
+        - Participants
+      operationId: deleteParticipants
+      summary: Удалить участников по фильтрам.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: query
+          name: includeIds
+          description: Список id участников для удаления.
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+          required: true
+      responses:
+        204:
+          description: Участники разговора успешно удалены.
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+                  schema:
+                    $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Разговор или участник не найден.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        409:
+          description: Участник является создателем разговора.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+  
+  /api/v1/participants/{conversationId}/{participantId}:
+    patch:
+      tags:
+        - Participants
+      operationId: updateParticipant
+      summary: Обновить участника разговора по id.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: query
+          name: participantId
+          description: Id участника разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateParticipant"
+      responses:
+        200:
+          description: Участник разговора успешно обновлен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Participant"
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+                  schema:
+                    $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Разговор или участник не найден.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+    delete:
+      tags:
+        - Participants
+      operationId: deleteParticipant
+      summary: Удалить участника разговора по id.
+      parameters:
+        - in: path
+          name: conversationId
+          description: Id разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: participantId
+          description: Id участника разговора.
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        204:
+          description: Участник разговора успешно удален.
+        400:
+          description: Невалидные данные запроса.
+          content:
+            application/json:
+                  schema:
+                    $ref: "#/components/schemas/ProblemDetails"
+        404:
+          description: Разговор или участник не найден.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        409:
+          description: Участник является создателем разговора.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+        500:
+          description: Внутренняя ошибка сервера.
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/ProblemDetails"
+
+components:
+  schemas:
+    Participant:
+      $ref: "../Dto/Participant/participant.schema.json"
+    AddParticipant:
+      $ref: "../Dto/Participant/create-participant.schema.json"
+    UpdateParticipant:
+      $ref: "../Dto/Participant/update-participant.schema.json"
+    ProblemDetails:
+      $ref: "../Dto/Problems/problems.schema.json"

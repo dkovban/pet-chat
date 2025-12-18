@@ -46,6 +46,7 @@ entity Conversation {
     Description: text                           /' Описание разговора '/
     * Type: ConversationType                    /' Тип разговора '/
     LastMessageId: uuid <<FK>>                  /' Id последнего сообщения в разговоре '/
+    PhotoId: uuid                               /' Id фотографии чата в S3 '/
 }
 
 entity Participant {
@@ -68,20 +69,25 @@ entity Message {
     * CreatedAtUtc: datetime                    /' Время создания сообщения '/
 }
 
-entity LastReadMessage {
-    * Id                                        /' Id записи '/
+entity MessagesAttachments
+{
+    MessageId: uuid <<FK>>                      /' Id сообщения '/
+    AttachmentId: uuid <<FK>>                   /' Id вложения '/
     --
+}
+
+entity LastReadMessage {
     * UserId: uuid <<FK>>                       /' Id пользователя '/
     * ConversationId: uuid <<FK>>               /' Id разговора '/
     * MessageId: uuid <<FK>>                    /' Id сообщения '/
+    --
     * LastReadTimeUtc: datetime                 /' Время последнего прочтения '/
 }
 
 entity MessageReaction {
-    * Id: uuid                                  /' Id реакции на сообщение '/
-    --
     * UserId: uuid <<FK>>                       /' Id пользователя '/
     * MessageId: uuid <<FK>>                    /' Id сообщения '/
+    --
     * EmotionType: EmotionType                  /' Тип эмоции '/
     * ReactedAtUtc: datetime                    /' Время реакции '/
 }
@@ -89,9 +95,17 @@ entity MessageReaction {
 entity Attachment {
     * Id                                        /' Id приложения '/
     --
-    * MessageId: uuid <<FK>>                    /' Id сообщения '/
     * FileType: FileType                        /' Тип файла '/
     * FileId: uuid <<FK to S3>>                 /' Id файла в S3 '/
+}
+
+entity UserPhoto
+{
+    * FileId: uuid <<FK to S3>>                 /' Id файла в S3 '/
+    * UserId: uuid <<FK>>                       /' Id пользователя '/
+    --
+    * CreatedAtUtc: datetime                    /' Время создания записи '/
+    * isMain: bool                              /' Является ли фотография главной '/
 }
 
 ConversationType .. Conversation
@@ -99,13 +113,13 @@ ParticipantRole .. Participant
 EmotionType .. MessageReaction
 FileType .. Attachment
 
-Participant }o--|| User : belongs to >
-Participant }o--|| Conversation : joins >
+Participant }o--|| User
+Participant }o--|| Conversation
 
-Message }o--|| User : sent by >
-Message }o--|| Conversation : in >
+Message }o--|| User
+Message }o--|| Conversation
 
-Conversation ||--o{ Message : contains >
+Conversation ||--o{ Message
 
 LastReadMessage }o--|| User
 LastReadMessage }o--|| Conversation
@@ -114,6 +128,9 @@ LastReadMessage }o--|| Message
 MessageReaction }o--|| User
 MessageReaction }o--|| Message
 
-Attachment }o--|| Message
+Attachment }o--|| MessagesAttachments
+Message }o--|| MessagesAttachments
+
+UserPhoto }o--|| User
 
 @enduml
